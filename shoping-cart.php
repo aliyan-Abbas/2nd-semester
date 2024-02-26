@@ -36,7 +36,22 @@ if(isset($_POST['addCart'])){
 		 }
 	  }
 
+	  <!-- checkout   -->
+	  if(isset($_GET['checkout'])){
+		$uId =$_SESSION['userId'];
+		$uName =$_SESSION['userName'];
+	    $uEmail= $_SESSION['userEmail'];
+		
+		foreach($_SESSION['finalCart'] as $key=>$value){
+       $pId = $value['p_id'];
+		}
+	}
 	  ?>
+
+	  
+	
+
+
  <!-- breadcrumb -->
 	<div class="container">
 		<div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
