@@ -1,4 +1,4 @@
-   <?php
+<?php
        include('query.php');
     include('header.php');
     if(!isset($_SESSION['adminEmail'])){
@@ -8,75 +8,7 @@
 
 
    ?>
-
-            <!-- Sale & Revenue Start -->
-            <div class="container-fluid pt-4 px-4">
-            <div class="col-sm-6 col-xl-3">
-                        <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                            <i class="fa fa-chart-pie fa-3x text-primary"></i>
-                            <div class="ms-3">
-                                <p class="mb-2">Total Sales</p>
-                                <h6 class="mb-0"><?php
-                                $query = $pdo->query("SELECT SUM(p_price as 'totalAmount' FROM orders");
-                                $totalPrice = $query->fetch(PDO::FETCH_ASSOC);
-                                echo $totalProducts['totalProducts'];
-                                ?>
-
-                                </h6>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row g-4">
-                    <div class="col-sm-6 col-xl-3">
-                        <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                            <i class="fa fa-chart-line fa-3x text-primary"></i>
-                            <div class="ms-3">
-                                <p class="mb-2">Total Products</p>
-                                <h6 class="mb-0">RS:<?php
-                                $query = $pdo->query("SELECT SUM(p_price as 'totalAmount' FROM orders");
-                                $totalPrice = $query->fetch(PDO::FETCH_ASSOC);
-                                echo $totalProducts['totalProducts'];
-                                ?>
-
-                                </h6>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-xl-3">
-                        <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                            <i class="fa fa-chart-bar fa-3x text-primary"></i>
-                            <div class="ms-3">
-                                <p class="mb-2">Today Categories</p>
-                                <h6 class="mb-0">
-                                <?php
-                                $query = $pdo->query("SELECT COUNT(id) as 'totalCategories' FROM category");
-                                $totalCategories= $query->fetch(PDO::FETCH_ASSOC);
-                                echo $totalCategories['totalCategories'];
-                                ?>
-                                </h6>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-xl-3">
-                        <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                            <i class="fa fa-chart-area fa-3x text-primary"></i>
-                            <div class="ms-3">
-                                <p class="mb-2">Today Users</p>
-                                <h6 class="mb-0"> <?php
-                                $query = $pdo->query("SELECT COUNT(id) as 'totalUsers' FROM users");
-                                $totalUsers= $query->fetch(PDO::FETCH_ASSOC);
-                                echo $totalUsers['totalUsers'];
-                                ?>
-                            </h6>
-                            </div>
-                        </div>
-                    </div>       
-            </div>
-            <!-- Sale & Revenue End -->
-
-
-            <!-- Sales Chart Start -->
+           <!-- Sales Chart Start -->
             <div class="container-fluid pt-4 px-4">
                 <div class="row g-4">
                     <div class="col-sm-12 col-xl-6">
@@ -124,20 +56,28 @@
                             </thead>
                             <tbody>
                                 <?php
-                                $query = $pdo->query("select * from orders");
-                                $allOrders=$query->fetchAll(PDO::FETCH_ASSOC);
-                                foreach($allOrders as $order){
+                                $query = $pdo->query("select * from invoice");
+                                $allInvoices=$query->fetchAll(PDO::FETCH_ASSOC);
+                                foreach($allInvoices as $invoice){
 
                                 
                                 ?>
                                 <tr>
-                                    <td><?php echo $order['dateTime']?></td>
-                                    <td><?php echo $order['u_name']?></td>
-                                    <td><?php echo $order['p_name']?></td>
-                                    <td><?php echo $order['p_qty']?></td>
-                                    <td><?php echo $order['p_price']?></td>
-                                    <td><?php echo $order['status']?></td>
-                                    <td><a class="btn btn-sm btn-primary"href="">DETAIL</a></td>
+                                    <td><?php echo $invoice['date_time']?></td>
+                                    <td><?php echo $invoice['u_id']?></td>
+                                    <td><?php echo $invoice['u_email']?></td>
+                                    <td><?php echo $invoice['total_products']?></td>
+                                    <td><?php echo $invoice['total_amount']?></td>
+                                    <td><?php echo $invoice['status']?></td>
+                                    <td>
+                                    <form action="email.php" method="post">
+                                        <button class="btn btn-sm btn-primary"
+                                        name="sendEmail" type="hidden" value="<?php
+                                        echo $invoice['u_email']?>"
+                                        >pending</button>
+                                        <input name="userEmail" type="hidden" value="<?php
+                                        echo $invoice['u_email']?>">
+                                    </form>    
                                 </tr>
                                 <?php
                                 }
